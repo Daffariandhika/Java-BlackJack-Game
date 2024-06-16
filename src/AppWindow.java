@@ -1,8 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-
 import java.awt.event.*;
-
 
 /**
  * Application window.
@@ -19,10 +17,10 @@ public class AppWindow extends JFrame
     private JMenuItem savePlayer = new JMenuItem("Save Current Player");
     private JMenuItem openPlayer = new JMenuItem("Open Existing Player");
     
-    final int WIDTH = 600;
-    final int HEIGHT = 500;
+    final int WIDTH = 614;
+    final int HEIGHT = 511;
 
-	public AppWindow()
+    public AppWindow()
     {
         super("Blackjack");
         
@@ -35,6 +33,10 @@ public class AppWindow extends JFrame
         this.setBackground(defaultTableColour);
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false); // Disable window resizing
+        
+        // Remove maximize button
+        setMaximizeButtonDisabled();
         
         // menu bar
         JMenuBar menuBar = new JMenuBar();
@@ -59,22 +61,17 @@ public class AppWindow extends JFrame
         menuBar.add(actionMenu);
         
         JMenu betMenu = new JMenu("Bet");
-        JMenuItem oneChip = new JMenuItem("$1");
-        JMenuItem fiveChip = new JMenuItem("$5");
         JMenuItem tenChip = new JMenuItem("$10");
-        JMenuItem twentyFiveChip = new JMenuItem("$25");
+        JMenuItem twentyfiveChip = new JMenuItem("$25");
+        JMenuItem fiftyChip = new JMenuItem("$50");
         JMenuItem hundredChip = new JMenuItem("$100");
-        betMenu.add(oneChip);
-        betMenu.add(fiveChip);
+        JMenuItem fivehundredChip = new JMenuItem("$500");
         betMenu.add(tenChip);
-        betMenu.add(twentyFiveChip);
+        betMenu.add(twentyfiveChip);
+        betMenu.add(fiftyChip);
         betMenu.add(hundredChip);
+        betMenu.add(fivehundredChip);
         menuBar.add(betMenu);
-        
-        JMenu windowMenu = new JMenu("Window");
-        JMenuItem windowTableColourMenu = new JMenuItem("Change Table Colour");
-        windowMenu.add(windowTableColourMenu);
-        menuBar.add(windowMenu);
         
         JMenu helpMenu = new JMenu("Help");
         JMenuItem helpBlackjackRulesMenu = new JMenuItem("Blackjack Rules");
@@ -109,59 +106,60 @@ public class AppWindow extends JFrame
         standAction.setAccelerator(
             KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        oneChip.setAccelerator(
+        tenChip.setAccelerator(
             KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_1,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        fiveChip.setAccelerator(
+        twentyfiveChip.setAccelerator(
             KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_2,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        tenChip.setAccelerator(
+        fiftyChip.setAccelerator(
             KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_3,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        twentyFiveChip.setAccelerator(
+        hundredChip.setAccelerator(
             KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_4,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        hundredChip.setAccelerator(
+        fivehundredChip.setAccelerator(
             KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_5,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         
         
-		// action listeners
-		dealAction.addActionListener(this);
+        // action listeners
+        dealAction.addActionListener(this);
         hitAction.addActionListener(this);
         doubleAction.addActionListener(this);
         standAction.addActionListener(this);
-		updatePlayerDetails.addActionListener(this);
-		savePlayer.addActionListener(this);
-		openPlayer.addActionListener(this);
-		windowTableColourMenu.addActionListener(this);
-		helpAboutMenu.addActionListener(this);
-		oneChip.addActionListener(this);
-        fiveChip.addActionListener(this);
+        updatePlayerDetails.addActionListener(this);
+        savePlayer.addActionListener(this);
+        openPlayer.addActionListener(this);
+        helpAboutMenu.addActionListener(this);
+        helpBlackjackRulesMenu.addActionListener(this);
         tenChip.addActionListener(this);
-        twentyFiveChip.addActionListener(this);
+        twentyfiveChip.addActionListener(this);
+        fiftyChip.addActionListener(this);
         hundredChip.addActionListener(this);
-        		
+        fivehundredChip.addActionListener(this);
+                
         gamePanel = new GamePanel();
         gamePanel.setBackground(defaultTableColour);
-		add(gamePanel);
+        add(gamePanel);
         
         setVisible(true);
     }
 
-	public void actionPerformed(ActionEvent evt)
+    private void setMaximizeButtonDisabled() {
+        // Disable maximize button
+        setUndecorated(true);
+        getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+        // Reapply decorations to disable the maximize button
+        setUndecorated(false);
+        getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+    }
+
+    public void actionPerformed(ActionEvent evt)
     {
         String act = evt.getActionCommand();
         
-        if (act.equals("$1"))
-        {
-            gamePanel.increaseBet(1);
-        }
-        else if (act.equals("$5"))
-        {
-            gamePanel.increaseBet(5);
-        }
-        else if (act.equals("$10"))
+        if (act.equals("$10"))
         {
             gamePanel.increaseBet(10);
         }
@@ -169,9 +167,17 @@ public class AppWindow extends JFrame
         {
             gamePanel.increaseBet(25);
         }
+        else if (act.equals("$50"))
+        {
+            gamePanel.increaseBet(50);
+        }
         else if (act.equals("$100"))
         {
             gamePanel.increaseBet(100);
+        }
+        else if (act.equals("$500"))
+        {
+            gamePanel.increaseBet(500);
         }
         else if (act.equals("Deal"))
         {
@@ -201,49 +207,61 @@ public class AppWindow extends JFrame
         {
             gamePanel.openPlayer();
         }
-		else if (act.equals("Change Table Colour"))
-		{
-		    Color tableColour = JColorChooser.showDialog(this, "Select Table Colour", defaultTableColour);
-		    this.setBackground(tableColour);
-		    gamePanel.setBackground(tableColour);
-		    gamePanel.repaint();
-		    this.repaint();
-		}
-		else if (act.equals("About Blackjack"))
-		{
-		    String aboutText = "<html><p align=\"center\" style=\"padding-bottom: 10px;\">Written by Daffa Riandhika &copy; 2006<br>Version 1.0</p><p align=\"center\" style=\"padding-bottom: 10px;\"><small>Become such an expert while developing this, <br>I won $1000 online in a game of Blackjack!</small></p><p align=\"center\">email: djw@davidwinter.me.uk<br>web: davidwinter.me.uk</p></html>";
-		    JOptionPane.showMessageDialog(this, aboutText, "About Blackjack", JOptionPane.PLAIN_MESSAGE);
-		}
-		
-		gamePanel.updateValues();
-	}
-	
-	public void componentResized(ComponentEvent e)
-	{
-	    int currentWidth = getWidth();
-	    int currentHeight = getHeight();
-	    
-	    boolean resize = false;
-	    
-	    if (currentWidth < WIDTH)
-	    {
-	        resize = true;
-	        currentWidth = WIDTH;
-	    }
-	    
-	    if (currentHeight < HEIGHT)
-	    {
-	        resize = true;
-	        currentHeight = HEIGHT;
-	    }
-	    
-	    if (resize)
-	    {
-	        setSize(currentWidth, currentHeight);
-	    }
-	}
-	
-	public void componentMoved(ComponentEvent e) { }
-	public void componentShown(ComponentEvent e) { }
-	public void componentHidden(ComponentEvent e) { }
+        else if (act.equals("About Blackjack"))
+        {
+            String aboutText = "<html><div style='width: 300px; text-align: center;'>" +
+                   "<h2>About Blackjack</h2>" +
+                   "<p><b>Written by:</b> Daffa Riandhika 2024</p>" +
+                   "<p><b>Version:</b> 1.0</p>" +
+                   "<p style='padding-bottom: 10px;'><small>This program was developed as part of my college assignment in Information Systems.</small></p>" +
+                   "<p><b>Contact:</b> Email: muhammaddaffariandhika@gmail.com</p></div></html>";
+            JOptionPane.showMessageDialog(this, aboutText, "About Blackjack", JOptionPane.PLAIN_MESSAGE);
+
+        }
+        else if (act.equals("Blackjack Rules"))
+        {
+            String rulesText = "<html><div style='width: 300px; text-align: center;'>" +
+                   "<h2>Blackjack Rules</h2>" +
+                   "<p><b>Goal:</b> Beat the dealer's hand without going over 21.</p>" +
+                   "<p><b>Card Values:</b> Face cards are worth 10. Aces are worth 1 or 11.</p>" +
+                   "<p><b>Starting:</b> Each player gets two cards; one of the dealer's is hidden.</p>" +
+                   "<p><b>Actions:</b> 'Hit' to get another card, 'Stand' to keep your total.</p>" +
+                   "<p><b>Bust:</b> Going over 21 means you lose, regardless of the dealer.</p>" +
+                   "<p><b>Blackjack:</b> An Ace and a 10-value card; usually pays 1.5x your bet.</p>" +
+                   "<p><b>Dealer:</b> Hits until reaching 17 or higher.</p></div></html>";
+            JOptionPane.showMessageDialog(this, rulesText, "Blackjack Rules", JOptionPane.PLAIN_MESSAGE);
+
+        }
+        
+        gamePanel.updateValues();
+    }
+    
+    public void componentResized(ComponentEvent e)
+    {
+        int currentWidth = getWidth();
+        int currentHeight = getHeight();
+        
+        boolean resize = false;
+        
+        if (currentWidth < WIDTH)
+        {
+            resize = true;
+            currentWidth = WIDTH;
+        }
+        
+        if (currentHeight < HEIGHT)
+        {
+            resize = true;
+            currentHeight = HEIGHT;
+        }
+        
+        if (resize)
+        {
+            setSize(currentWidth, currentHeight);
+        }
+    }
+    
+    public void componentMoved(ComponentEvent e) { }
+    public void componentShown(ComponentEvent e) { }
+    public void componentHidden(ComponentEvent e) { }
 }

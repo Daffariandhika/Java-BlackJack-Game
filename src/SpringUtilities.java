@@ -1,6 +1,3 @@
-// not too sure why this isn't a part of a Static Java library instead of just an extra .java file download
-// from: http://java.sun.com/docs/books/tutorial/uiswing/layout/spring.html
-
 import javax.swing.*;
 import javax.swing.SpringLayout;
 import java.awt.*;

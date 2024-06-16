@@ -45,7 +45,7 @@ public class Dealer extends BlackjackPlayer
      */
     public Dealer()
     {
-        super("Dutchman", 45, "male");
+        super("The Dealer", 45, "male");
         
         deck = new Deck(CARD_PACKS);
     }

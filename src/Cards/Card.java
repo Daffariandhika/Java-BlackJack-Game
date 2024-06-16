@@ -2,8 +2,6 @@ package Cards;
 
 /**
  * Class to represent a playing Card.
- *
- * @author Daffa Riandhika
  */
 public class Card
 {

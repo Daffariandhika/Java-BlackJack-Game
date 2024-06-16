@@ -4,8 +4,6 @@ import java.util.*;
 
 /**
  * Represents a shuffled Deck of playing Cards.
- *
- * @author Daffa Riandhika
  */
 public class Deck extends Stack<Card>
 {

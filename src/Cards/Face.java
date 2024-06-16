@@ -2,8 +2,6 @@ package Cards;
 
 /**
  * Class to represent the face value of a Card.
- *
- * @author Daffa Riandhika
  */
 public class Face
 {

@@ -2,8 +2,6 @@ package Cards;
 
 /**
  * Class that represents a single hand of cards for a player.
- *
- * @author Daffa Riandhika
  */
 public class DealerCardHand extends CardHand
 {

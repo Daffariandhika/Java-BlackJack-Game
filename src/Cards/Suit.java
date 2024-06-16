@@ -2,8 +2,6 @@ package Cards;
 
 /**
  * Class to represent a card Suit.
- *
- * @author Daffa Riandhika
  */
 public class Suit
 {

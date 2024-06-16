@@ -5,8 +5,6 @@ import java.util.*;
 /**
  * Represents a pack of 52 playing Cards.
  * Hearts, Diamonds, Clubs and Spades; Ace, 2 - 10, Jack, Queen and King.
- *
- * @author Daffa Riandhika
  */
 public class CardPack extends Stack<Card>
 {

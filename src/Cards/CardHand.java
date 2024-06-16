@@ -4,8 +4,6 @@ import java.util.*;
 
 /**
  * Class that represents a single hand of cards for a player.
- *
- * @author Daffa Riandhika
  */
 public abstract class CardHand extends Vector<Card>
 {    
